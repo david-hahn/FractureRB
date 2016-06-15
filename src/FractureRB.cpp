@@ -192,23 +192,23 @@ namespace FractureSim{
 		int steps = (int)((t_max/t_step)+0.5); // round
 		printf("\n%% fracture simulation for %s_%d ... %d time steps", ((string*)rb->getUserPointer())->c_str(), rbTimeCode, steps);
 		if( steps == 0) printf("\n%% contact duration or max time too short (%.3lgs)",t_max);
-		if( haveMesh && haveParams && steps > 0){
 
-			if(!haveBEM){ // delayed initialization of BEM solver on first collision
-				t1=omp_get_wtime();
-				printf("\n%% ... initializing BEM solver");
-				if( useEstSIFs >=0 && fractSim->getElems().size() > useEstSIFs ) fractSim->setMethodEstimated();
-				try{
-					fractSim->initBEM(*mat,false,bndCnds);
-					haveBEM=true;
-					t2=omp_get_wtime();
-					printf("\n%%           BEM initialized ...\t%.4lfs",t2-t1); t1=t2;
-				}catch(...){
-					printf(" ERROR !!! ");
-					haveParams=false; haveMesh=false;
-				}
+		if(!haveBEM && haveMesh && haveParams){ // delayed initialization of BEM solver on first collision
+			t1=omp_get_wtime();
+			printf("\n%% ... initializing BEM solver");
+			if( useEstSIFs >=0 && fractSim->getElems().size() > useEstSIFs ) fractSim->setMethodEstimated();
+			try{
+				fractSim->initBEM(*mat,false,bndCnds);
+				haveBEM=true;
+				t2=omp_get_wtime();
+				printf("\n%%           BEM initialized ...\t%.4lfs",t2-t1); t1=t2;
+			}catch(...){
+				printf(" ERROR !!! ");
+				haveParams=false; haveMesh=false;
 			}
+		}
 
+		if( haveBEM && steps > 0){
 			stringstream outfile;
 			outfile << outDir << *(string*)rb->getUserPointer() << "_" << rbTimeCode;
 

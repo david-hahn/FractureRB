@@ -10,6 +10,8 @@ if( BUILD_HYENA )
 	set(LIBTYPE SHARED)
 endif()
 
+option(BULLET_DOUBLE_PRECISION "If on, we'll link to double-precision Bullet libs; recommended" OFF)
+
 add_definitions(-DASSEMBLE_GALERKIN_OMP) # use OpenMP in HyENA to assemble SGBEM matrices
 if(MSVC)
 	# stuff for Visual Studio compiler
@@ -46,7 +48,9 @@ find_library(zlib zlib)
 set(OpenVDB_libs ${OpenVDBlib} ${Halflib} ${tbblib} ${zlib})
 
 # Bullet libraries and includes
-add_definitions(-DBT_USE_DOUBLE_PRECISION)
+if( BULLET_DOUBLE_PRECISION )
+	add_definitions(-DBT_USE_DOUBLE_PRECISION)
+endif()
 find_path(BULLET_INCLUDE bullet/btBulletDynamicsCommon.h)
 include_directories (${BULLET_INCLUDE}/bullet)
 # Bullet core libraries

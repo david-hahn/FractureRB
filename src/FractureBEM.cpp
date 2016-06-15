@@ -515,6 +515,15 @@ namespace FractureSim{
 			postPro->vtkAddData("displacement",3,false,u);
 			postPro->vtkAddData("traction",    3,true ,q);
 
+			vector_type u_c;
+			if(u_vals>0){
+				u_c = bemSolver->computeCrackBaseDisplacements();
+			}else{
+				u_c.resize(3*nodes.size());
+				u_c.setZero();
+			}
+			postPro->vtkAddData("crack_base_displacement",3,false,u_c);
+
 			// write region-IDs to mesh
 			regionVect.resize( elems.size() );
 			for(int i=0; i<elems.size(); ++i){
