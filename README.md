@@ -1,6 +1,9 @@
 # FractureRB
 
 Sources for the paper "Fast approximations for boundary element based brittle fracture simulation".
+http://pub.ist.ac.at/group_wojtan/projects/2016_Hahn_FastFracture/
+
+
 
 This project replaces https://github.com/david-hahn/FractureBEM.
 
