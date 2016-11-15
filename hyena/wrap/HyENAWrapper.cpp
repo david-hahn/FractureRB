@@ -202,7 +202,7 @@ namespace FractureSim{
 				T( 4,   k ) -= area/12.0 * r[2]; T( 4, 2+k ) += area/12.0 * r[0];
 				T( 5,   k ) += area/12.0 * r[1]; T( 5, 1+k ) -= area/12.0 * r[0];
 			}
-
+			T /= totalArea;
 			T *= (D.trace()/M); // scale for the regularizer is somewhat arbitrary, it should be about as "important" as D itself
 			fN = D*fN; // .transpose() not coded since D is symmetric
 			luS.compute(D*D + T.transpose()*T);
